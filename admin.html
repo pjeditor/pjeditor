@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>P/J AI Studio - Admin Panel</title>
+    <!-- P/J AI Studio Icon -->
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <!-- PWA Manifest & Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#07030f">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #07030f, #130a24, #1b103a);
+            min-height: 100vh;
+            color: #fff;
+            padding: 16px;
+            padding-bottom: 70px;
+        }
+
+        /* Top Header */
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(20, 15, 35, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            padding: 15px 18px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+        }
+
+        .admin-title h2 {
+            font-size: 18px;
+            background: linear-gradient(135deg, #00ffcc, #007bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .admin-title p {
+            font-size: 11px;
+            color: #9b9bb5;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 7px 12px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s;
+        }
+
+        .back-btn:hover {
+            border-color: #00ffcc;
+            color: #00ffcc;
+        }
+
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #e0e0e0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title i {
+            color: #00ffcc;
+        }
+
+        .clear-all-btn {
+            background: rgba(255, 75, 75, 0.12);
+            border: 1px solid rgba(255, 75, 75, 0.3);
+            color: #ff4b4b;
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .clear-all-btn:hover {
+            background: #ff4b4b;
+            color: #fff;
+        }
+
+        /* Stats Row */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 14px;
+            border-radius: 16px;
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            font-size: 20px;
+            color: #00ffcc;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .stat-card p {
+            font-size: 10px;
+            color: #9b9bb5;
+        }
+
+        /* Admin Boxes */
+        .admin-box {
+            background: rgba(20, 15, 35, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 14px;
+            margin-bottom: 22px;
+        }
+
+        .user-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .user-item:last-child {
+            border-bottom: none;
+        }
+
+        .user-info h4 {
+            font-size: 12px;
+            color: #fff;
+        }
+
+        .user-info span {
+            font-size: 10px;
+            color: #8888aa;
+        }
+
+        .delete-btn {
+            background: rgba(255, 75, 75, 0.1);
+            border: 1px solid rgba(255, 75, 75, 0.3);
+            color: #ff4b4b;
+            padding: 5px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            cursor: pointer;
+        }
+
+        .delete-btn:hover {
+            background: #ff4b4b;
+            color: #fff;
+        }
+
+        /* Photo Gallery Grid */
+        .photo-gallery {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+            aspect-ratio: 1;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .gallery-item .photo-tag {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.75);
+            font-size: 9px;
+            padding: 3px;
+            text-align: center;
+            color: #00ffcc;
+        }
+
+        .photo-delete-btn {
+            position: absolute;
+            top: 6px;
+            right: 6px;
+            background: rgba(255, 75, 75, 0.85);
+            color: #fff;
+            border: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+            transition: 0.2s;
+        }
+
+        .photo-delete-btn:hover {
+            background: #ff0000;
+            transform: scale(1.1);
+        }
+
+        /* Footer */
+        .admin-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 11px;
+            color: #7b7b9e;
+        }
+
+        .admin-footer span {
+            color: #00ffcc;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <div class="admin-header">
+        <div class="admin-title">
+            <h2>Admin Control</h2>
+            <p>P/J AI Studio Manager</p>
+        </div>
+        <a href="dashboard.html" class="back-btn">
+            <i class="fas fa-arrow-left"></i> Dashboard
+        </a>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <h3>12</h3>
+            <p>Total Users</p>
+        </div>
+        <div class="stat-card">
+            <h3>48</h3>
+            <p>Photos Saved</p>
+        </div>
+    </div>
+
+    <!-- Registered Users Section -->
+    <div class="section-header">
+        <div class="section-title">
+            <i class="fas fa-users"></i> Registered Users
+        </div>
+        <button class="clear-all-btn" onclick="alert('All users cleared!')">Clear All</button>
+    </div>
+    <div class="admin-box">
+        <div class="user-item">
+            <div class="user-info">
+                <h4>princcejutt@gmail.com</h4>
+                <span>Joined: Aug 2026</span>
+            </div>
+            <button class="delete-btn" onclick="alert('User removed')">Remove</button>
+        </div>
+        <div class="user-item">
+            <div class="user-info">
+                <h4>ali.khan_ai@gmail.com</h4>
+                <span>Joined: Aug 2026</span>
+            </div>
+            <button class="delete-btn" onclick="alert('User removed')">Remove</button>
+        </div>
+    </div>
+
+    <!-- Photo Gallery Section -->
+    <div class="section-header">
+        <div class="section-title">
+            <i class="fas fa-images"></i> Saved Photos
+        </div>
+        <button class="clear-all-btn" onclick="alert('All gallery photos deleted!')">Delete All</button>
+    </div>
+    <div class="photo-gallery">
+        <div class="gallery-item">
+            <button class="photo-delete-btn" onclick="alert('Photo deleted')"><i class="fas fa-times"></i></button>
+            <img src="https://picsum.photos/200?random=1" alt="User Image">
+            <div class="photo-tag">HD Enhance</div>
+        </div>
+        <div class="gallery-item">
+            <button class="photo-delete-btn" onclick="alert('Photo deleted')"><i class="fas fa-times"></i></button>
+            <img src="https://picsum.photos/200?random=2" alt="User Image">
+            <div class="photo-tag">Outfit Swap</div>
+        </div>
+        <div class="gallery-item">
+            <button class="photo-delete-btn" onclick="alert('Photo deleted')"><i class="fas fa-times"></i></button>
+            <img src="https://picsum.photos/200?random=3" alt="User Image">
+            <div class="photo-tag">BG Remover</div>
+        </div>
+    </div>
+
+    <div class="admin-footer">
+        <p>P/J AI Photo Editor | Developed by <span>PrinCce Jutt</span></p>
+    </div>
+
+</body>
+</html>
