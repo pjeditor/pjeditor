@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>P/J AI Photo Editor - Dashboard</title>
+    <!-- P/J AI Studio Icon -->
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <!-- PWA Manifest & Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#07030f">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #07030f, #130a24, #1b103a);
+            color: #fff;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            padding-bottom: 90px;
+            overflow-x: hidden;
+        }
+
+        /* Top Info Bar (Simulated) */
+        .top-info-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: #9b9bb5;
+            padding: 0 5px;
+        }
+
+        .top-icons {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Main Header Banner */
+        .header-banner {
+            background: rgba(20, 15, 35, 0.6);
+            border: 1px solid rgba(0, 255, 204, 0.15);
+            padding: 20px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+
+        .header-text h2 {
+            font-size: 20px;
+            background: linear-gradient(135deg, #00ffcc, #007bff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+
+        .header-text p {
+            font-size: 12px;
+            color: #b0b0c5;
+        }
+
+        .admin-btn {
+            background: rgba(0, 255, 204, 0.1);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            color: #00ffcc;
+            padding: 8px 15px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.3s;
+        }
+
+        .admin-btn:hover {
+            background: rgba(0, 255, 204, 0.2);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
+        }
+
+        /* Tools Grid Section */
+        .section-title {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #00ffcc;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            padding: 0 5px;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .tool-card {
+            background: rgba(20, 15, 35, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-3px);
+            border-color: rgba(0, 255, 204, 0.3);
+            background: rgba(20, 15, 35, 0.8);
+            box-shadow: 0 5px 15px rgba(0, 255, 204, 0.1);
+        }
+
+        .tool-icon-box {
+            font-size: 24px;
+            color: #00ffcc;
+            margin-bottom: 12px;
+        }
+
+        .tool-name {
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+
+        .tool-desc {
+            font-size: 10px;
+            color: #8c8cbf;
+            line-height: 1.3;
+        }
+
+        /* Footer Credit */
+        .footer-credit {
+            margin-top: auto;
+            text-align: center;
+            font-size: 11px;
+            color: #7b7b9e;
+            padding: 20px 0;
+        }
+
+        .footer-credit span {
+            color: #00ffcc;
+            font-weight: 700;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(20, 15, 35, 0.95);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(0, 255, 204, 0.15);
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            z-index: 1000;
+            box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
+        }
+
+        .nav-item {
+            text-decoration: none;
+            color: #b0b0c5;
+            font-size: 18px;
+            transition: 0.3s;
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: #00ffcc;
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 4px;
+            background: #00ffcc;
+            border-radius: 50%;
+        }
+
+        /* Styles for the "More" Dropdown Menu */
+        .more-dropdown {
+            position: absolute;
+            bottom: 70px;
+            right: 10px;
+            background: rgba(20, 15, 35, 0.98);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 255, 204, 0.3);
+            border-radius: 15px;
+            padding: 10px;
+            width: 200px;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 1001;
+            transform: translateY(10px);
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .more-dropdown.show {
+            display: flex;
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .dropdown-item {
+            text-decoration: none;
+            color: #b0b0c5;
+            font-size: 13px;
+            padding: 10px 15px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: 0.2s;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(0, 255, 204, 0.1);
+            color: #fff;
+        }
+
+        .dropdown-item i {
+            font-size: 14px;
+            width: 16px;
+            text-align: center;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Top Status Bar Simulation -->
+    <div class="top-info-bar">
+        <span>4:38 PM</span>
+        <div class="top-icons">
+            <i class="fas fa-wifi"></i>
+            <i class="fas fa-battery-full"></i>
+        </div>
+    </div>
+
+    <!-- Main Header Banner -->
+    <div class="header-banner">
+        <div class="header-text">
+            <h2>P/J AI Studio</h2>
+            <p>Select an AI Tool to Edit</p>
+        </div>
+        <a href="admin.html" class="admin-btn">
+            <i class="fas fa-shield-alt"></i> Admin Panel
+        </a>
+    </div>
+
+    <!-- Tools Section Title -->
+    <div class="section-title">
+        <i class="fas fa-wand-magic-sparkles"></i> Advanced AI Tools (20+)
+    </div>
+
+    <!-- 2-Column Tools Grid -->
+    <div class="tools-grid">
+        <div class="tool-card">
+            <div class="tool-icon-box"><i class="fas fa-image"></i></div>
+            <div class="tool-name">HD Enhance</div>
+            <div class="tool-desc">Upscale & clear resolution</div>
+        </div>
+        <div class="tool-card">
+            <div class="tool-icon-box"><i class="fas fa-tshirt"></i></div>
+            <div class="tool-name">Outfit Swap</div>
+            <div class="tool-desc">Change clothes instantly</div>
+        </div>
+        <div class="tool-card">
+            <div class="tool-icon-box"><i class="fas fa-eraser"></i></div>
+            <div class="tool-name">BG Remover</div>
+            <div class="tool-desc">Isolate subject with AI</div>
+        </div>
+        <div class="tool-card">
+            <div class="tool-icon-box"><i class="fas fa-history"></i></div>
+            <div class="tool-name">Photo Repair</div>
+            <div class="tool-desc">Colorize & fix old pics</div>
+        </div>
+        <div class="tool-card">
+            <div class="tool-icon-box"><i class="fas fa-smile-beam"></i></div>
+            <div class="tool-name">Face Glow</div>
+            <div class="tool-desc">Smart portrait retouch</div>
+        </div>
+        <div class="tool-card">
+            <div class="tool-icon-box"><i class="fas fa-cut"></i></div>
+            <div class="tool-name">GenErase</div>
+            <div class="tool-desc">Remove unwanted objects</div>
+        </div>
+        <div class="tool-card">
+            <div class="tool-icon-box"><i class="fas fa-paint-brush"></i></div>
+            <div class="tool-name">Anime/Cartoon</div>
+            <div class="tool-desc">Convert to artwork</div>
+        </div>
+        <div class="tool-card">
+            <div class="tool-icon-box"><i class="fas fa-robot"></i></div>
+            <div class="tool-name">AI Avatar</div>
+            <div class="tool-desc">Generate unique portraits</div>
+        </div>
+    </div>
+
+    <!-- Footer Branding -->
+    <div class="footer-credit">
+        <p>P/J AI Photo Editor | Developed by <span>PrinCce Jutt</span></p>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="bottom-nav" style="position: relative;">
+        <!-- Share Button with App Sharing Function -->
+        <button class="nav-item active" onclick="shareApp()"><i class="fas fa-share-alt"></i></button>
+        <a href="#" class="nav-item"><i class="fas fa-heart"></i></a>
+        <a href="#" class="nav-item"><i class="fas fa-edit"></i></a>
+        <a href="#" class="nav-item"><i class="fas fa-trash-alt"></i></a>
+        
+        <!-- The "More" button (trigger) -->
+        <button class="nav-item" id="moreTrigger" onclick="toggleMoreMenu(event)">
+            <i class="fas fa-ellipsis-v"></i>
+        </button>
+
+        <!-- The Dropdown Menu -->
+        <div class="more-dropdown" id="moreMenu">
+            <a href="#" class="dropdown-item"><i class="fas fa-crown"></i> Go Premium</a>
+            <a href="#" class="dropdown-item"><i class="fas fa-user-circle"></i> My Account</a>
+            <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
+            <a href="#" class="dropdown-item"><i class="fas fa-info-circle"></i> Help & About</a>
+            <a href="#" class="dropdown-item"><i class="fas fa-star"></i> Rate Us</a>
+        </div>
+    </div>
+
+    <!-- JavaScript for Menu & App Share -->
+    <script>
+        function toggleMoreMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('moreMenu');
+            menu.classList.toggle('show');
+        }
+
+        // Close the menu if clicked outside
+        window.addEventListener('click', function(e) {
+            const menu = document.getElementById('moreMenu');
+            const trigger = document.getElementById('moreTrigger');
+            
+            if (menu.classList.contains('show')) {
+                if (!menu.contains(e.target) && e.target !== trigger) {
+                    menu.classList.remove('show');
+                }
+            }
+        });
+
+        // App Share Functionality
+        function shareApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'P/J AI Studio',
+                    text: 'Best AI Photo Editor app! Check it out:',
+                    url: window.location.href,
+                }).catch(console.error);
+            } else {
+                alert("Link copied! Share this app with your friends.");
+            }
+        }
+    </script>
+
+</body>
+</html>
