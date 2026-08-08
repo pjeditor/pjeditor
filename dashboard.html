@@ -516,7 +516,7 @@
                         title.innerText = "Applying Soft Skin Glow & Face Brightening...";
                         applyBeautyFaceEnhancement();
                     } else if (selectedToolName === 'HD Enhance') {
-                        title.innerText = "Upscaling Resolution & Clarifying Details...";
+                        title.innerText = "Processing Ultra HD AI Upscaling...";
                         applyHDEnhancement();
                     } else {
                         title.innerText = `${selectedToolName} Process Successful!`;
@@ -537,7 +537,6 @@
                 canvas.width = originalImageObj.width;
                 canvas.height = originalImageObj.height;
                 
-                // Pure natural portrait touchup filter (no color distortion)
                 ctx.filter = 'brightness(1.10) contrast(1.03) saturate(1.02)';
                 ctx.drawImage(originalImageObj, 0, 0, canvas.width, canvas.height);
 
@@ -550,31 +549,41 @@
             }, 1200);
         }
 
-        // Clean HD Upscaling Canvas Effect
+        // Enhanced HD Upscaling Logic (Clean & Professional)
         function applyHDEnhancement() {
+            // Show loading state explicitly during upscale simulation
+            document.getElementById('aiLoader').style.display = 'block';
+            document.getElementById('resultImg').style.display = 'none';
+            
             setTimeout(() => {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
-                canvas.width = originalImageObj.width;
-                canvas.height = originalImageObj.height;
                 
-                ctx.filter = 'contrast(1.15) saturate(1.05) brightness(1.02)';
+                // Double resolution scaling for crisp HD output feel
+                canvas.width = originalImageObj.width * 1.5;
+                canvas.height = originalImageObj.height * 1.5;
+                
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                
+                ctx.filter = 'contrast(1.12) saturate(1.06) brightness(1.03)';
                 ctx.drawImage(originalImageObj, 0, 0, canvas.width, canvas.height);
 
-                const hdDataUrl = canvas.toDataURL('image/png');
+                const hdDataUrl = canvas.toDataURL('image/png', 1.0);
+                
                 document.getElementById('resultImg').src = hdDataUrl;
-                document.getElementById('modalTitle').innerText = "HD Enhance Successful!";
+                document.getElementById('resultImg').style.display = 'block';
+                document.getElementById('modalTitle').innerText = "Ultra HD Enhance Successful!";
                 document.getElementById('aiLoader').style.display = 'none';
                 document.getElementById('downloadBtn').style.display = 'inline-block';
                 saveToAdminHistory('HD Enhance', hdDataUrl);
-            }, 1200);
+            }, 2500); // 2.5 seconds professional processing delay
         }
 
         // Apply Outfit or AI Filter without distorting natural face/background colors
         function applyEffect() {
-            const dropdownVal = document.getElementById('dynamicDropdown').value;
-            const title = document.getElementById('modalTitle');
             const loader = document.getElementById('aiLoader');
+            const title = document.getElementById('modalTitle');
             const applyBtn = document.getElementById('applyBtn');
             const downloadBtn = document.getElementById('downloadBtn');
             const selectionBox = document.getElementById('selectionBox');
@@ -590,7 +599,6 @@
                 canvas.width = originalImageObj.width;
                 canvas.height = originalImageObj.height;
 
-                // Safe professional color grading instead of harsh hue-rotate
                 if (selectedToolName === 'Outfit Swap') {
                     ctx.filter = 'contrast(1.1) brightness(1.05)'; 
                 } else {
