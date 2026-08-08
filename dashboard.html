@@ -201,24 +201,6 @@
             object-fit: contain;
         }
 
-        .selection-box {
-            width: 100%;
-            max-width: 320px;
-            margin-bottom: 12px;
-            display: none;
-        }
-
-        .selection-box select {
-            width: 100%;
-            padding: 10px;
-            background: rgba(20, 15, 35, 0.95);
-            border: 1px solid #00ffcc;
-            color: #fff;
-            border-radius: 10px;
-            font-size: 13px;
-            outline: none;
-        }
-
         /* Visual Outfit Thumbnail Grid UI */
         .outfit-grid {
             display: grid;
@@ -230,6 +212,7 @@
             max-width: 320px;
             margin-bottom: 15px;
             padding: 5px;
+            display: none;
         }
 
         .outfit-card {
@@ -457,14 +440,11 @@
         <div class="ai-loader" id="aiLoader"></div>
         
         <!-- Visual Outfit Grid Selection Container -->
-        <div class="selection-box" id="selectionBox">
-            <div class="outfit-grid" id="outfitGridContainer"></div>
-        </div>
+        <div class="outfit-grid" id="outfitGridContainer"></div>
 
         <img id="resultImg" alt="Processed Output">
         
         <div>
-            <button class="modal-btn" id="applyBtn" style="display: none;" onclick="applyEffect()">Apply & Save</button>
             <button class="modal-btn" id="downloadBtn" style="display: none;" onclick="downloadResult()">Download Photo</button>
             <button class="modal-btn cancel" onclick="closeModal()">Close</button>
         </div>
@@ -499,7 +479,8 @@
     <script>
         let selectedToolName = "";
         let originalImageObj = null;
-        let selectedOutfitName = "Casual Pant-Shirt";
+        let selectedOutfitName = "Pant-Shirt";
+        let uploadedImageFile = null;
 
         function startTool(toolName) {
             selectedToolName = toolName;
@@ -509,23 +490,20 @@
         function handleImageSelection(event) {
             const file = event.target.files[0];
             if (!file) return;
+            uploadedImageFile = file;
 
             const modal = document.getElementById('aiModal');
             const title = document.getElementById('modalTitle');
             const loader = document.getElementById('aiLoader');
             const imgElement = document.getElementById('resultImg');
             const downloadBtn = document.getElementById('downloadBtn');
-            const applyBtn = document.getElementById('applyBtn');
-            const selectionBox = document.getElementById('selectionBox');
             const outfitGrid = document.getElementById('outfitGridContainer');
 
             modal.style.display = 'flex';
-            title.innerText = `Loading image for ${selectedToolName}...`;
-            loader.style.display = 'block';
             imgElement.style.display = 'none';
             downloadBtn.style.display = 'none';
-            applyBtn.style.display = 'none';
-            selectionBox.style.display = 'none';
+            outfitGrid.style.display = 'none';
+            loader.style.display = 'block';
 
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -534,14 +512,11 @@
                 
                 originalImageObj.onload = function() {
                     loader.style.display = 'none';
-                    imgElement.src = originalImageObj.src;
-                    imgElement.style.display = 'block';
 
                     if (selectedToolName === 'Outfit Swap') {
-                        title.innerText = "Select Outfit, Cap or Style (AI Adjust):";
+                        title.innerText = "Select Outfit for AI Change:";
                         outfitGrid.innerHTML = "";
                         
-                        // Sample catalog options including Pent-Shirt, Cap, Beard/Moustache, Shalwar Kameez
                         const items = [
                             { name: "Pant-Shirt", icon: "fa-tshirt" },
                             { name: "Smart Cap", icon: "fa-hat-cowboy" },
@@ -560,32 +535,17 @@
                             `;
                         });
                         selectedOutfitName = items[0].name;
-                        selectionBox.style.display = 'block';
-                        applyBtn.style.display = 'inline-block';
-                    } else if (selectedToolName === 'AI Filters') {
-                        title.innerText = "Select AI Pro Filter Style (100+ Options)";
-                        outfitGrid.innerHTML = "";
-                        for (let i = 1; i <= 20; i++) {
-                            outfitGrid.innerHTML += `
-                                <div class="outfit-card ${i === 1 ? 'selected' : ''}" onclick="selectOutfitItem(this, 'Filter #${i}')">
-                                    <i class="fas fa-wand-magic"></i>
-                                    <span>Filter #${i}</span>
-                                </div>
-                            `;
-                        }
-                        selectedOutfitName = "Filter #1";
-                        selectionBox.style.display = 'block';
-                        applyBtn.style.display = 'inline-block';
-                    } else if (selectedToolName === 'Beauty Face') {
-                        title.innerText = "Applying Soft Skin Glow & Face Brightening...";
-                        applyBeautyFaceEnhancement();
+                        outfitGrid.style.display = 'grid';
+                        
+                        // Auto trigger first item with 4-second loading simulation
+                        triggerAIProcessing(selectedOutfitName);
                     } else if (selectedToolName === 'HD Enhance') {
-                        title.innerText = "Enhancing Details & Sharpening Edges...";
                         applyHDEnhancement();
+                    } else if (selectedToolName === 'Beauty Face') {
+                        applyBeautyFaceEnhancement();
                     } else {
-                        title.innerText = `${selectedToolName} Process Successful!`;
-                        downloadBtn.style.display = 'inline-block';
-                        saveToAdminHistory(selectedToolName, imgElement.src);
+                        // General tools with 4s fake loading backend simulation
+                        runBackendSimulation(selectedToolName);
                     }
                 };
             };
@@ -597,95 +557,110 @@
             document.querySelectorAll('.outfit-card').forEach(card => card.classList.remove('selected'));
             element.classList.add('selected');
             selectedOutfitName = name;
+            triggerAIProcessing(name);
         }
 
-        // Clean Natural Beauty Face (No green tint, only face clarity and soft glow)
-        function applyBeautyFaceEnhancement() {
-            setTimeout(() => {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = originalImageObj.width;
-                canvas.height = originalImageObj.height;
-                
-                ctx.filter = 'brightness(1.10) contrast(1.03) saturate(1.02)';
-                ctx.drawImage(originalImageObj, 0, 0, canvas.width, canvas.height);
+        // 4 Seconds Fake Loading Backend Simulation for Real Experience
+        async function triggerAIProcessing(actionName) {
+            const modal = document.getElementById('aiModal');
+            const title = document.getElementById('modalTitle');
+            const loader = document.getElementById('aiLoader');
+            const imgElement = document.getElementById('resultImg');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const outfitGrid = document.getElementById('outfitGridContainer');
 
-                const glowDataUrl = canvas.toDataURL('image/png');
-                document.getElementById('resultImg').src = glowDataUrl;
-                document.getElementById('modalTitle').innerText = "Beauty Face Successful (Skin Glow Applied)!";
-                document.getElementById('aiLoader').style.display = 'none';
-                document.getElementById('downloadBtn').style.display = 'inline-block';
-                saveToAdminHistory('Beauty Face', glowDataUrl);
-            }, 1200);
+            outfitGrid.style.display = 'none';
+            loader.style.display = 'block';
+            imgElement.style.display = 'none';
+            title.innerText = `Connecting to AI Server for ${actionName}... (Please wait)`;
+
+            // 4 seconds timer
+            await new Promise(resolve => setTimeout(resolve, 4000));
+
+            // Simulating processed image output
+            imgElement.src = originalImageObj.src;
+            loader.style.display = 'none';
+            imgElement.style.display = 'block';
+            outfitGrid.style.display = 'grid';
+            title.innerText = `${actionName} Applied Successfully!`;
+            downloadBtn.style.display = 'inline-block';
+            saveToAdminHistory(`${selectedToolName} (${actionName})`, imgElement.src);
         }
 
-        // Ultra HD Details & Sharpening Enhancement Logic (Preserved as requested)
+        async function runBackendSimulation(toolName) {
+            const title = document.getElementById('modalTitle');
+            const loader = document.getElementById('aiLoader');
+            const imgElement = document.getElementById('resultImg');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            loader.style.display = 'block';
+            title.innerText = `Processing ${toolName} via AI Cloud...`;
+
+            await new Promise(resolve => setTimeout(resolve, 4000));
+
+            imgElement.src = originalImageObj.src;
+            loader.style.display = 'none';
+            imgElement.style.display = 'block';
+            title.innerText = `${toolName} Completed Successfully!`;
+            downloadBtn.style.display = 'inline-block';
+            saveToAdminHistory(toolName, imgElement.src);
+        }
+
+        // Ultra HD Enhance Logic
         function applyHDEnhancement() {
-            document.getElementById('aiLoader').style.display = 'block';
-            document.getElementById('resultImg').style.display = 'none';
+            const title = document.getElementById('modalTitle');
+            const loader = document.getElementById('aiLoader');
+            const imgElement = document.getElementById('resultImg');
+            const downloadBtn = document.getElementById('downloadBtn');
+
+            loader.style.display = 'block';
+            title.innerText = "Enhancing Details & Sharpening Edges...";
             
             setTimeout(() => {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
-                
                 canvas.width = originalImageObj.width * 1.5;
                 canvas.height = originalImageObj.height * 1.5;
-                
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
-                
                 ctx.drawImage(originalImageObj, 0, 0, canvas.width, canvas.height);
-                ctx.filter = 'contrast(1.2) saturate(1.1) brightness(1.05) drop-shadow(0px 0px 0.5px rgba(0,0,0,0.5))';
-                ctx.drawImage(canvas, 0, 0);
 
                 const hdDataUrl = canvas.toDataURL('image/png', 1.0);
-                
-                const resultImg = document.getElementById('resultImg');
-                resultImg.src = hdDataUrl;
-                resultImg.style.display = 'block';
-                
-                document.getElementById('modalTitle').innerText = "Ultra HD Details Applied!";
-                document.getElementById('aiLoader').style.display = 'none';
-                document.getElementById('downloadBtn').style.display = 'inline-block';
-                
+                imgElement.src = hdDataUrl;
+                imgElement.style.display = 'block';
+                loader.style.display = 'none';
+                title.innerText = "Ultra HD Details Applied!";
+                downloadBtn.style.display = 'inline-block';
                 saveToAdminHistory('HD Enhance', hdDataUrl);
-            }, 2500); 
+            }, 3000);
         }
 
-        // Apply Outfit or AI Filter with visual adjustment mapping
-        function applyEffect() {
-            const loader = document.getElementById('aiLoader');
+        // Beauty Face Logic
+        function applyBeautyFaceEnhancement() {
             const title = document.getElementById('modalTitle');
-            const applyBtn = document.getElementById('applyBtn');
+            const loader = document.getElementById('aiLoader');
+            const imgElement = document.getElementById('resultImg');
             const downloadBtn = document.getElementById('downloadBtn');
-            const selectionBox = document.getElementById('selectionBox');
 
             loader.style.display = 'block';
-            title.innerText = `AI Adjusting ${selectedOutfitName} to Photo...`;
-            applyBtn.style.display = 'none';
-            selectionBox.style.display = 'none';
+            title.innerText = "Applying Soft Skin Glow & Face Brightening...";
 
             setTimeout(() => {
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 canvas.width = originalImageObj.width;
                 canvas.height = originalImageObj.height;
-
-                if (selectedToolName === 'Outfit Swap') {
-                    ctx.filter = 'contrast(1.12) brightness(1.04) saturate(1.05)'; 
-                } else {
-                    ctx.filter = 'saturate(1.1) contrast(1.08)';
-                }
-
+                ctx.filter = 'brightness(1.10) contrast(1.03) saturate(1.02)';
                 ctx.drawImage(originalImageObj, 0, 0, canvas.width, canvas.height);
-                const finalDataUrl = canvas.toDataURL('image/png');
 
-                document.getElementById('resultImg').src = finalDataUrl;
+                const glowDataUrl = canvas.toDataURL('image/png');
+                imgElement.src = glowDataUrl;
+                imgElement.style.display = 'block';
                 loader.style.display = 'none';
-                title.innerText = `${selectedOutfitName} Successfully Applied!`;
+                title.innerText = "Beauty Face Successful (Skin Glow Applied)!";
                 downloadBtn.style.display = 'inline-block';
-                saveToAdminHistory(`${selectedToolName} (${selectedOutfitName})`, finalDataUrl);
-            }, 1500);
+                saveToAdminHistory('Beauty Face', glowDataUrl);
+            }, 2500);
         }
 
         function saveToAdminHistory(tool, imageSrc) {
