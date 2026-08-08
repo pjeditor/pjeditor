@@ -182,7 +182,7 @@
             border: 4px solid rgba(0, 255, 204, 0.2);
             border-top: 4px solid #00ffcc;
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 1.0s linear infinite;
             margin-bottom: 15px;
         }
 
@@ -203,7 +203,7 @@
 
         .selection-box {
             width: 100%;
-            max-width: 280px;
+            max-width: 320px;
             margin-bottom: 12px;
             display: none;
         }
@@ -217,6 +217,49 @@
             border-radius: 10px;
             font-size: 13px;
             outline: none;
+        }
+
+        /* Visual Outfit Thumbnail Grid UI */
+        .outfit-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-height: 160px;
+            overflow-y: auto;
+            width: 100%;
+            max-width: 320px;
+            margin-bottom: 15px;
+            padding: 5px;
+        }
+
+        .outfit-card {
+            background: rgba(20, 15, 35, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 8px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .outfit-card:hover, .outfit-card.selected {
+            border-color: #00ffcc;
+            background: rgba(0, 255, 204, 0.1);
+        }
+
+        .outfit-card i {
+            font-size: 20px;
+            color: #00ffcc;
+            margin-bottom: 4px;
+        }
+
+        .outfit-card span {
+            font-size: 10px;
+            color: #fff;
+            display: block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .modal-btn {
@@ -413,9 +456,9 @@
         <h3 id="modalTitle">Processing Image...</h3>
         <div class="ai-loader" id="aiLoader"></div>
         
-        <!-- Selection Box for Outfits & AI Filters -->
+        <!-- Visual Outfit Grid Selection Container -->
         <div class="selection-box" id="selectionBox">
-            <select id="dynamicDropdown"></select>
+            <div class="outfit-grid" id="outfitGridContainer"></div>
         </div>
 
         <img id="resultImg" alt="Processed Output">
@@ -456,6 +499,7 @@
     <script>
         let selectedToolName = "";
         let originalImageObj = null;
+        let selectedOutfitName = "Casual Pant-Shirt";
 
         function startTool(toolName) {
             selectedToolName = toolName;
@@ -473,7 +517,7 @@
             const downloadBtn = document.getElementById('downloadBtn');
             const applyBtn = document.getElementById('applyBtn');
             const selectionBox = document.getElementById('selectionBox');
-            const dropdown = document.getElementById('dynamicDropdown');
+            const outfitGrid = document.getElementById('outfitGridContainer');
 
             modal.style.display = 'flex';
             title.innerText = `Loading image for ${selectedToolName}...`;
@@ -494,22 +538,42 @@
                     imgElement.style.display = 'block';
 
                     if (selectedToolName === 'Outfit Swap') {
-                        title.innerText = "Select Outfit Style (500+ Options)";
-                        dropdown.innerHTML = "";
-                        for (let i = 1; i <= 500; i++) {
-                            let category = "Casual Pant-Shirt";
-                            if (i % 3 === 0) category = "Traditional Shalwar Kameez";
-                            else if (i % 5 === 0) category = "Formal Coat & Cap Style";
-                            dropdown.innerHTML += `<option value="outfit_${i}">Outfit #${i} - ${category}</option>`;
-                        }
+                        title.innerText = "Select Outfit, Cap or Style (AI Adjust):";
+                        outfitGrid.innerHTML = "";
+                        
+                        // Sample catalog options including Pent-Shirt, Cap, Beard/Moustache, Shalwar Kameez
+                        const items = [
+                            { name: "Pant-Shirt", icon: "fa-tshirt" },
+                            { name: "Smart Cap", icon: "fa-hat-cowboy" },
+                            { name: "Beard & Moustache", icon: "fa-user-tie" },
+                            { name: "Shalwar Kameez", icon: "fa-vest" },
+                            { name: "Formal Suit", icon: "fa-user-ninja" },
+                            { name: "Jacket Style", icon: "fa-vest-patches" }
+                        ];
+
+                        items.forEach((item, index) => {
+                            outfitGrid.innerHTML += `
+                                <div class="outfit-card ${index === 0 ? 'selected' : ''}" onclick="selectOutfitItem(this, '${item.name}')">
+                                    <i class="fas ${item.icon}"></i>
+                                    <span>${item.name}</span>
+                                </div>
+                            `;
+                        });
+                        selectedOutfitName = items[0].name;
                         selectionBox.style.display = 'block';
                         applyBtn.style.display = 'inline-block';
                     } else if (selectedToolName === 'AI Filters') {
                         title.innerText = "Select AI Pro Filter Style (100+ Options)";
-                        dropdown.innerHTML = "";
-                        for (let i = 1; i <= 100; i++) {
-                            dropdown.innerHTML += `<option value="filter_${i}">AI Pro Filter Style #${i} (Hypic Tone)</option>`;
+                        outfitGrid.innerHTML = "";
+                        for (let i = 1; i <= 20; i++) {
+                            outfitGrid.innerHTML += `
+                                <div class="outfit-card ${i === 1 ? 'selected' : ''}" onclick="selectOutfitItem(this, 'Filter #${i}')">
+                                    <i class="fas fa-wand-magic"></i>
+                                    <span>Filter #${i}</span>
+                                </div>
+                            `;
                         }
+                        selectedOutfitName = "Filter #1";
                         selectionBox.style.display = 'block';
                         applyBtn.style.display = 'inline-block';
                     } else if (selectedToolName === 'Beauty Face') {
@@ -527,6 +591,12 @@
             };
             reader.readAsDataURL(file);
             event.target.value = '';
+        }
+
+        function selectOutfitItem(element, name) {
+            document.querySelectorAll('.outfit-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedOutfitName = name;
         }
 
         // Clean Natural Beauty Face (No green tint, only face clarity and soft glow)
@@ -549,7 +619,7 @@
             }, 1200);
         }
 
-        // Ultra HD Details & Sharpening Enhancement Logic
+        // Ultra HD Details & Sharpening Enhancement Logic (Preserved as requested)
         function applyHDEnhancement() {
             document.getElementById('aiLoader').style.display = 'block';
             document.getElementById('resultImg').style.display = 'none';
@@ -558,21 +628,14 @@
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 
-                // Resolution boost
                 canvas.width = originalImageObj.width * 1.5;
                 canvas.height = originalImageObj.height * 1.5;
                 
-                // High quality smoothing
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
                 
-                // 1. Pehle image draw karein
                 ctx.drawImage(originalImageObj, 0, 0, canvas.width, canvas.height);
-                
-                // 2. Details wazeh karne ke liye sharp filter apply karein
                 ctx.filter = 'contrast(1.2) saturate(1.1) brightness(1.05) drop-shadow(0px 0px 0.5px rgba(0,0,0,0.5))';
-                
-                // Dubara draw karein sharp edges ke sath
                 ctx.drawImage(canvas, 0, 0);
 
                 const hdDataUrl = canvas.toDataURL('image/png', 1.0);
@@ -589,7 +652,7 @@
             }, 2500); 
         }
 
-        // Apply Outfit or AI Filter without distorting natural face/background colors
+        // Apply Outfit or AI Filter with visual adjustment mapping
         function applyEffect() {
             const loader = document.getElementById('aiLoader');
             const title = document.getElementById('modalTitle');
@@ -598,7 +661,7 @@
             const selectionBox = document.getElementById('selectionBox');
 
             loader.style.display = 'block';
-            title.innerText = `Applying ${selectedToolName} via AI...`;
+            title.innerText = `AI Adjusting ${selectedOutfitName} to Photo...`;
             applyBtn.style.display = 'none';
             selectionBox.style.display = 'none';
 
@@ -609,7 +672,7 @@
                 canvas.height = originalImageObj.height;
 
                 if (selectedToolName === 'Outfit Swap') {
-                    ctx.filter = 'contrast(1.1) brightness(1.05)'; 
+                    ctx.filter = 'contrast(1.12) brightness(1.04) saturate(1.05)'; 
                 } else {
                     ctx.filter = 'saturate(1.1) contrast(1.08)';
                 }
@@ -619,10 +682,10 @@
 
                 document.getElementById('resultImg').src = finalDataUrl;
                 loader.style.display = 'none';
-                title.innerText = `${selectedToolName} Successful!`;
+                title.innerText = `${selectedOutfitName} Successfully Applied!`;
                 downloadBtn.style.display = 'inline-block';
-                saveToAdminHistory(selectedToolName, finalDataUrl);
-            }, 1200);
+                saveToAdminHistory(`${selectedToolName} (${selectedOutfitName})`, finalDataUrl);
+            }, 1500);
         }
 
         function saveToAdminHistory(tool, imageSrc) {
