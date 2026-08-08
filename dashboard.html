@@ -516,7 +516,7 @@
                         title.innerText = "Applying Soft Skin Glow & Face Brightening...";
                         applyBeautyFaceEnhancement();
                     } else if (selectedToolName === 'HD Enhance') {
-                        title.innerText = "Processing Ultra HD AI Upscaling...";
+                        title.innerText = "Enhancing Details & Sharpening Edges...";
                         applyHDEnhancement();
                     } else {
                         title.innerText = `${selectedToolName} Process Successful!`;
@@ -549,9 +549,8 @@
             }, 1200);
         }
 
-        // Enhanced HD Upscaling Logic (Clean & Professional)
+        // Ultra HD Details & Sharpening Enhancement Logic
         function applyHDEnhancement() {
-            // Show loading state explicitly during upscale simulation
             document.getElementById('aiLoader').style.display = 'block';
             document.getElementById('resultImg').style.display = 'none';
             
@@ -559,25 +558,35 @@
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 
-                // Double resolution scaling for crisp HD output feel
+                // Resolution boost
                 canvas.width = originalImageObj.width * 1.5;
                 canvas.height = originalImageObj.height * 1.5;
                 
+                // High quality smoothing
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
                 
-                ctx.filter = 'contrast(1.12) saturate(1.06) brightness(1.03)';
+                // 1. Pehle image draw karein
                 ctx.drawImage(originalImageObj, 0, 0, canvas.width, canvas.height);
+                
+                // 2. Details wazeh karne ke liye sharp filter apply karein
+                ctx.filter = 'contrast(1.2) saturate(1.1) brightness(1.05) drop-shadow(0px 0px 0.5px rgba(0,0,0,0.5))';
+                
+                // Dubara draw karein sharp edges ke sath
+                ctx.drawImage(canvas, 0, 0);
 
                 const hdDataUrl = canvas.toDataURL('image/png', 1.0);
                 
-                document.getElementById('resultImg').src = hdDataUrl;
-                document.getElementById('resultImg').style.display = 'block';
-                document.getElementById('modalTitle').innerText = "Ultra HD Enhance Successful!";
+                const resultImg = document.getElementById('resultImg');
+                resultImg.src = hdDataUrl;
+                resultImg.style.display = 'block';
+                
+                document.getElementById('modalTitle').innerText = "Ultra HD Details Applied!";
                 document.getElementById('aiLoader').style.display = 'none';
                 document.getElementById('downloadBtn').style.display = 'inline-block';
+                
                 saveToAdminHistory('HD Enhance', hdDataUrl);
-            }, 2500); // 2.5 seconds professional processing delay
+            }, 2500); 
         }
 
         // Apply Outfit or AI Filter without distorting natural face/background colors
