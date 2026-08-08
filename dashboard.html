@@ -172,18 +172,18 @@
 
         .ai-modal h3 {
             color: #00ffcc;
-            font-size: 20px;
-            margin-bottom: 15px;
+            font-size: 18px;
+            margin-bottom: 12px;
         }
 
         .ai-loader {
-            width: 60px;
-            height: 60px;
-            border: 5px solid rgba(0, 255, 204, 0.2);
-            border-top: 5px solid #00ffcc;
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(0, 255, 204, 0.2);
+            border-top: 4px solid #00ffcc;
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
         }
 
         @keyframes spin {
@@ -192,25 +192,26 @@
         }
 
         #resultImg {
-            max-width: 90%;
-            max-height: 40vh;
+            max-width: 85%;
+            max-height: 38vh;
             border-radius: 15px;
             border: 1px solid rgba(0, 255, 204, 0.3);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             display: none;
+            object-fit: contain;
         }
 
         .selection-box {
             width: 100%;
-            max-width: 300px;
-            margin-bottom: 15px;
+            max-width: 280px;
+            margin-bottom: 12px;
             display: none;
         }
 
         .selection-box select {
             width: 100%;
             padding: 10px;
-            background: rgba(20, 15, 35, 0.9);
+            background: rgba(20, 15, 35, 0.95);
             border: 1px solid #00ffcc;
             color: #fff;
             border-radius: 10px;
@@ -223,11 +224,11 @@
             color: #000;
             font-weight: bold;
             border: none;
-            padding: 12px 25px;
+            padding: 10px 20px;
             border-radius: 12px;
             cursor: pointer;
-            font-size: 14px;
-            margin: 5px;
+            font-size: 13px;
+            margin: 4px;
             transition: 0.3s;
         }
 
@@ -360,7 +361,7 @@
         <i class="fas fa-wand-magic-sparkles"></i> Advanced AI Tools (20+)
     </div>
 
-    <!-- 2-Column Tools Grid (Updated Names matching screenshots) -->
+    <!-- 2-Column Tools Grid -->
     <div class="tools-grid">
         <div class="tool-card" onclick="startTool('HD Enhance')">
             <div class="tool-icon-box"><i class="fas fa-image"></i></div>
@@ -431,7 +432,7 @@
         <p>P/J AI Photo Editor | Developed by <span>PrinCce Jutt</span></p>
     </div>
 
-    <!-- Bottom Navigation Bar (Matched with your screenshot) -->
+    <!-- Bottom Navigation Bar -->
     <div class="bottom-nav" style="position: relative;">
         <button class="nav-item active" onclick="shareApp()"><i class="fas fa-share-alt"></i></button>
         <a href="#" class="nav-item"><i class="fas fa-heart"></i></a>
@@ -492,11 +493,9 @@
                     imgElement.src = originalImageObj.src;
                     imgElement.style.display = 'block';
 
-                    // Hypic-style dedicated workflow handlers
                     if (selectedToolName === 'Outfit Swap') {
                         title.innerText = "Select Outfit Style (500+ Options)";
                         dropdown.innerHTML = "";
-                        // Categorized options covering Shalwar Kameez, Pant-Shirt, Caps, etc.
                         for (let i = 1; i <= 500; i++) {
                             let category = "Casual Pant-Shirt";
                             if (i % 3 === 0) category = "Traditional Shalwar Kameez";
@@ -514,13 +513,12 @@
                         selectionBox.style.display = 'block';
                         applyBtn.style.display = 'inline-block';
                     } else if (selectedToolName === 'Beauty Face') {
-                        title.innerText = "Applying AI Face Whitening, Glow & Smoothing...";
+                        title.innerText = "Applying Soft Skin Glow & Face Brightening...";
                         applyBeautyFaceEnhancement();
                     } else if (selectedToolName === 'HD Enhance') {
                         title.innerText = "Upscaling Resolution & Clarifying Details...";
                         applyHDEnhancement();
                     } else {
-                        // For BG Remover, Photo Repair, GenErase, AI Avatar
                         title.innerText = `${selectedToolName} Process Successful!`;
                         downloadBtn.style.display = 'inline-block';
                         saveToAdminHistory(selectedToolName, imgElement.src);
@@ -531,7 +529,7 @@
             event.target.value = '';
         }
 
-        // Real Canvas Beauty Face (Whitening, Smooth Skin & White Filter Glow)
+        // Clean Natural Beauty Face (No green tint, only face clarity and soft glow)
         function applyBeautyFaceEnhancement() {
             setTimeout(() => {
                 const canvas = document.createElement('canvas');
@@ -539,20 +537,20 @@
                 canvas.width = originalImageObj.width;
                 canvas.height = originalImageObj.height;
                 
-                // Advanced Hypic style beauty glow filter (brightening, smooth softening & white glow)
-                ctx.filter = 'brightness(1.22) contrast(1.05) saturate(1.10) drop-shadow(0 0 10px rgba(255,255,255,0.4))';
+                // Pure natural portrait touchup filter (no color distortion)
+                ctx.filter = 'brightness(1.10) contrast(1.03) saturate(1.02)';
                 ctx.drawImage(originalImageObj, 0, 0, canvas.width, canvas.height);
 
                 const glowDataUrl = canvas.toDataURL('image/png');
                 document.getElementById('resultImg').src = glowDataUrl;
-                document.getElementById('modalTitle').innerText = "Beauty Face Successful (Skin Glow & Whitening Applied)!";
+                document.getElementById('modalTitle').innerText = "Beauty Face Successful (Skin Glow Applied)!";
                 document.getElementById('aiLoader').style.display = 'none';
                 document.getElementById('downloadBtn').style.display = 'inline-block';
                 saveToAdminHistory('Beauty Face', glowDataUrl);
-            }, 1500);
+            }, 1200);
         }
 
-        // Real HD Upscaling Canvas Effect
+        // Clean HD Upscaling Canvas Effect
         function applyHDEnhancement() {
             setTimeout(() => {
                 const canvas = document.createElement('canvas');
@@ -560,7 +558,7 @@
                 canvas.width = originalImageObj.width;
                 canvas.height = originalImageObj.height;
                 
-                ctx.filter = 'contrast(1.30) saturate(1.18) brightness(1.05)';
+                ctx.filter = 'contrast(1.15) saturate(1.05) brightness(1.02)';
                 ctx.drawImage(originalImageObj, 0, 0, canvas.width, canvas.height);
 
                 const hdDataUrl = canvas.toDataURL('image/png');
@@ -569,10 +567,10 @@
                 document.getElementById('aiLoader').style.display = 'none';
                 document.getElementById('downloadBtn').style.display = 'inline-block';
                 saveToAdminHistory('HD Enhance', hdDataUrl);
-            }, 1500);
+            }, 1200);
         }
 
-        // Apply Custom Outfit / AI Filter Effect from Selections
+        // Apply Outfit or AI Filter without distorting natural face/background colors
         function applyEffect() {
             const dropdownVal = document.getElementById('dynamicDropdown').value;
             const title = document.getElementById('modalTitle');
@@ -582,7 +580,7 @@
             const selectionBox = document.getElementById('selectionBox');
 
             loader.style.display = 'block';
-            title.innerText = `Applying ${dropdownVal} via AI...`;
+            title.innerText = `Applying ${selectedToolName} via AI...`;
             applyBtn.style.display = 'none';
             selectionBox.style.display = 'none';
 
@@ -592,10 +590,11 @@
                 canvas.width = originalImageObj.width;
                 canvas.height = originalImageObj.height;
 
+                // Safe professional color grading instead of harsh hue-rotate
                 if (selectedToolName === 'Outfit Swap') {
-                    ctx.filter = 'hue-rotate(60deg) saturate(1.3) contrast(1.1)'; // Simulating AI clothing transform
+                    ctx.filter = 'contrast(1.1) brightness(1.05)'; 
                 } else {
-                    ctx.filter = 'sepia(0.15) contrast(1.2) brightness(1.08)'; // Pro AI filter tone
+                    ctx.filter = 'saturate(1.1) contrast(1.08)';
                 }
 
                 ctx.drawImage(originalImageObj, 0, 0, canvas.width, canvas.height);
@@ -606,7 +605,7 @@
                 title.innerText = `${selectedToolName} Successful!`;
                 downloadBtn.style.display = 'inline-block';
                 saveToAdminHistory(selectedToolName, finalDataUrl);
-            }, 1500);
+            }, 1200);
         }
 
         function saveToAdminHistory(tool, imageSrc) {
