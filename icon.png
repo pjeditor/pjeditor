@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+    <defs>
+        <!-- Background Gradient -->
+        <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#07030f" />
+            <stop offset="50%" stop-color="#130a24" />
+            <stop offset="100%" stop-color="#1b103a" />
+        </linearGradient>
+
+        <!-- Neon Cyan & Blue Glow Effect -->
+        <linearGradient id="neonGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#00ffcc" />
+            <stop offset="100%" stop-color="#007bff" />
+        </linearGradient>
+
+        <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="12" result="coloredBlur"/>
+            <feMerge>
+                <feMergeNode in="coloredBlur"/>
+                <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+        </filter>
+    </defs>
+
+    <!-- App Icon Base Shape (Rounded Square) -->
+    <rect width="512" height="512" rx="115" fill="url(#bgGrad)" />
+    <rect x="12" y="12" width="488" height="488" rx="103" fill="none" stroke="url(#neonGrad)" stroke-width="4" stroke-opacity="0.6" />
+
+    <!-- Camera Lens Outer Ring -->
+    <circle cx="256" cy="256" r="140" fill="none" stroke="url(#neonGrad)" stroke-width="10" filter="url(#glow)" opacity="0.4" />
+    <circle cx="256" cy="256" r="110" fill="#0c0718" stroke="url(#neonGrad)" stroke-width="8" filter="url(#glow)" />
+
+    <!-- Camera Shutter Blades Details -->
+    <path d="M256 146 L256 180 M256 332 L256 366 M146 256 L180 256 M332 256 L366 256" stroke="#00ffcc" stroke-width="6" stroke-linecap="round" opacity="0.7" />
+
+    <!-- Inner Lens Reflection / Center -->
+    <circle cx="256" cy="256" r="65" fill="#130a24" stroke="#00ffcc" stroke-width="4" />
+    <circle cx="230" cy="230" r="15" fill="#ffffff" opacity="0.25" />
+
+    <!-- Glowing "P/J" Monogram with AI Sparkle -->
+    <text x="256" y="278" font-family="'Segoe UI', Arial, sans-serif" font-size="76" font-weight="900" fill="url(#neonGrad)" text-anchor="middle" filter="url(#glow)" letter-spacing="2">P/J</text>
+    
+    <!-- AI Sparkle Icon -->
+    <path d="M340 160 L348 185 L373 193 L348 201 L340 226 L332 201 L307 193 L332 185 Z" fill="#00ffcc" filter="url(#glow)" />
+</svg>
