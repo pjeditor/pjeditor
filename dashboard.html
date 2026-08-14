@@ -1,755 +1,1573 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>P/J AI Photo Editor - Dashboard</title>
-    <!-- P/J AI Studio Icon -->
-    <link rel="icon" type="image/svg+xml" href="icon.svg">
-    <!-- PWA Manifest & Meta Tags -->
-    <link rel="manifest" href="manifest.json">
-    <meta name="theme-color" content="#07030f">
-    <link rel="apple-touch-icon" href="icon.png">
-    <!-- FontAwesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07030f">
 
-        body {
-            background: linear-gradient(135deg, #07030f, #130a24, #1b103a);
-            color: #fff;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: 20px;
-            padding-bottom: 90px;
-            overflow-x: hidden;
-        }
+<title>P/J AI Photo Editor</title>
 
-        /* Top Info Bar */
-        .top-info-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            font-size: 13px;
-            color: #9b9bb5;
-            padding: 0 5px;
-        }
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-        .top-icons {
-            display: flex;
-            gap: 15px;
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Segoe UI,Tahoma,sans-serif;
+}
 
-        /* Main Header Banner */
-        .header-banner {
-            background: rgba(20, 15, 35, 0.6);
-            border: 1px solid rgba(0, 255, 204, 0.15);
-            padding: 20px;
-            border-radius: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
-        }
+body{
+    background:linear-gradient(135deg,#07030f,#130a24,#1b103a);
+    color:#fff;
+    min-height:100vh;
+    padding:20px;
+    padding-bottom:100px;
+}
 
-        .header-text h2 {
-            font-size: 20px;
-            background: linear-gradient(135deg, #00ffcc, #007bff);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
+/* TOP BAR */
+.top-info-bar{
+    display:flex;
+    justify-content:space-between;
+    color:#9b9bb5;
+    font-size:13px;
+    margin-bottom:20px;
+}
 
-        .header-text p {
-            font-size: 12px;
-            color: #b0b0c5;
-        }
+.top-icons{
+    display:flex;
+    gap:15px;
+}
 
-        .admin-btn {
-            background: rgba(0, 255, 204, 0.1);
-            border: 1px solid rgba(0, 255, 204, 0.3);
-            color: #00ffcc;
-            padding: 8px 15px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 12px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: 0.3s;
-        }
+/* HEADER */
+.header-banner{
+    background:rgba(20,15,35,.65);
+    border:1px solid rgba(0,255,204,.15);
+    padding:20px;
+    border-radius:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,.4);
+}
 
-        .admin-btn:hover {
-            background: rgba(0, 255, 204, 0.2);
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.2);
-        }
+.header-text h2{
+    font-size:21px;
+    background:linear-gradient(135deg,#00ffcc,#007bff);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
 
-        /* Tools Grid Section */
-        .section-title {
-            font-size: 16px;
-            margin-bottom: 15px;
-            color: #00ffcc;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            padding: 0 5px;
-        }
+.header-text p{
+    color:#aaaac0;
+    font-size:12px;
+    margin-top:5px;
+}
 
-        .tools-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 30px;
-        }
+.admin-btn{
+    color:#00ffcc;
+    border:1px solid rgba(0,255,204,.3);
+    background:rgba(0,255,204,.08);
+    padding:9px 13px;
+    border-radius:12px;
+    text-decoration:none;
+    font-size:12px;
+}
 
-        .tool-card {
-            background: rgba(20, 15, 35, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 20px 15px;
-            border-radius: 20px;
-            transition: all 0.3s ease;
-            cursor: pointer;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+/* TITLE */
+.section-title{
+    color:#00ffcc;
+    font-weight:bold;
+    margin:20px 5px 15px;
+    font-size:16px;
+}
 
-        .tool-card:hover {
-            transform: translateY(-3px);
-            border-color: rgba(0, 255, 204, 0.3);
-            background: rgba(20, 15, 35, 0.8);
-            box-shadow: 0 5px 15px rgba(0, 255, 204, 0.1);
-        }
+/* TOOLS */
+.tools-grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:15px;
+}
 
-        .tool-icon-box {
-            font-size: 24px;
-            color: #00ffcc;
-            margin-bottom: 12px;
-        }
+.tool-card{
+    background:rgba(20,15,35,.55);
+    border:1px solid rgba(255,255,255,.06);
+    padding:20px 12px;
+    border-radius:20px;
+    text-align:center;
+    cursor:pointer;
+    transition:.3s;
+}
 
-        .tool-name {
-            font-size: 14px;
-            font-weight: 700;
-            margin-bottom: 6px;
-            color: #fff;
-        }
+.tool-card:hover{
+    transform:translateY(-4px);
+    border-color:rgba(0,255,204,.4);
+    box-shadow:0 8px 25px rgba(0,255,204,.12);
+}
 
-        .tool-desc {
-            font-size: 10px;
-            color: #8c8cbf;
-            line-height: 1.3;
-        }
+.tool-icon{
+    color:#00ffcc;
+    font-size:25px;
+    margin-bottom:12px;
+}
 
-        /* AI Modal Processing Styles */
-        .ai-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(7, 3, 15, 0.95);
-            backdrop-filter: blur(10px);
-            z-index: 2000;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            text-align: center;
-        }
+.tool-name{
+    font-size:14px;
+    font-weight:bold;
+}
 
-        .ai-modal h3 {
-            color: #00ffcc;
-            font-size: 18px;
-            margin-bottom: 12px;
-        }
+.tool-desc{
+    color:#8888ad;
+    font-size:10px;
+    margin-top:6px;
+}
 
-        .ai-loader {
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(0, 255, 204, 0.2);
-            border-top: 4px solid #00ffcc;
-            border-radius: 50%;
-            animation: spin 1.0s linear infinite;
-            margin-bottom: 15px;
-        }
+/* MODAL */
+.modal{
+    display:none;
+    position:fixed;
+    inset:0;
+    z-index:5000;
+    background:rgba(5,2,12,.97);
+    backdrop-filter:blur(15px);
+    padding:20px;
+    overflow:auto;
+}
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
+.modal.active{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
 
-        #resultImg {
-            max-width: 85%;
-            max-height: 38vh;
-            border-radius: 15px;
-            border: 1px solid rgba(0, 255, 204, 0.3);
-            margin-bottom: 12px;
-            display: none;
-            object-fit: contain;
-        }
+.modal-box{
+    width:100%;
+    max-width:600px;
+    max-height:95vh;
+    overflow:auto;
+    background:rgba(20,15,35,.9);
+    border:1px solid rgba(0,255,204,.2);
+    border-radius:22px;
+    padding:20px;
+    box-shadow:0 20px 70px rgba(0,0,0,.6);
+}
 
-        /* Visual Outfit Thumbnail Grid UI */
-        .outfit-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            max-height: 160px;
-            overflow-y: auto;
-            width: 100%;
-            max-width: 320px;
-            margin-bottom: 15px;
-            padding: 5px;
-            display: none;
-        }
+.modal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+}
 
-        .outfit-card {
-            background: rgba(20, 15, 35, 0.8);
-            border: 2px solid rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-            padding: 8px;
-            cursor: pointer;
-            text-align: center;
-            transition: 0.3s;
-        }
+.modal-title{
+    color:#00ffcc;
+    font-size:18px;
+    font-weight:bold;
+}
 
-        .outfit-card:hover, .outfit-card.selected {
-            border-color: #00ffcc;
-            background: rgba(0, 255, 204, 0.1);
-        }
+.close{
+    width:35px;
+    height:35px;
+    border:none;
+    border-radius:50%;
+    background:rgba(255,255,255,.08);
+    color:#fff;
+    cursor:pointer;
+}
 
-        .outfit-card i {
-            font-size: 20px;
-            color: #00ffcc;
-            margin-bottom: 4px;
-        }
+/* UPLOAD */
+.upload-area{
+    border:2px dashed rgba(0,255,204,.25);
+    border-radius:16px;
+    padding:30px 15px;
+    text-align:center;
+    cursor:pointer;
+    margin-bottom:15px;
+}
 
-        .outfit-card span {
-            font-size: 10px;
-            color: #fff;
-            display: block;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+.upload-area:hover{
+    border-color:#00ffcc;
+    background:rgba(0,255,204,.04);
+}
 
-        .modal-btn {
-            background: linear-gradient(135deg, #00ffcc, #007bff);
-            color: #000;
-            font-weight: bold;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 13px;
-            margin: 4px;
-            transition: 0.3s;
-        }
+.upload-area i{
+    font-size:35px;
+    color:#00ffcc;
+    margin-bottom:10px;
+}
 
-        .modal-btn.cancel {
-            background: rgba(255, 255, 255, 0.1);
-            color: #fff;
-        }
+.upload-area p{
+    font-size:13px;
+    color:#aaa;
+}
 
-        /* Footer Credit */
-        .footer-credit {
-            margin-top: auto;
-            text-align: center;
-            font-size: 11px;
-            color: #7b7b9e;
-            padding: 20px 0;
-        }
+#fileInput{
+    display:none;
+}
 
-        .footer-credit span {
-            color: #00ffcc;
-            font-weight: 700;
-        }
+/* IMAGE */
+.preview{
+    display:none;
+    text-align:center;
+    margin:15px 0;
+}
 
-        /* Bottom Navigation Bar */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: rgba(20, 15, 35, 0.95);
-            backdrop-filter: blur(15px);
-            border-top: 1px solid rgba(0, 255, 204, 0.15);
-            display: flex;
-            justify-content: space-around;
-            padding: 15px 0;
-            z-index: 1000;
-            box-shadow: 0 -5px 20px rgba(0,0,0,0.3);
-        }
+.preview img{
+    max-width:100%;
+    max-height:400px;
+    border-radius:15px;
+    border:1px solid rgba(0,255,204,.25);
+}
 
-        .nav-item {
-            text-decoration: none;
-            color: #b0b0c5;
-            font-size: 18px;
-            transition: 0.3s;
-            position: relative;
-            background: none;
-            border: none;
-            cursor: pointer;
-        }
+/* BUTTONS */
+.btn-row{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
 
-        .nav-item:hover, .nav-item.active {
-            color: #00ffcc;
-        }
+.btn{
+    border:none;
+    border-radius:12px;
+    padding:11px 18px;
+    cursor:pointer;
+    font-weight:bold;
+    background:linear-gradient(135deg,#00ffcc,#007bff);
+    color:#000;
+}
 
-        .nav-item.active::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 4px;
-            height: 4px;
-            background: #00ffcc;
-            border-radius: 50%;
-        }
+.btn.secondary{
+    background:rgba(255,255,255,.08);
+    color:#fff;
+}
 
-        /* More Dropdown Menu */
-        .more-dropdown {
-            position: absolute;
-            bottom: 70px;
-            right: 10px;
-            background: rgba(20, 15, 35, 0.98);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 255, 204, 0.3);
-            border-radius: 15px;
-            padding: 10px;
-            width: 200px;
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            z-index: 1001;
-        }
+.btn:disabled{
+    opacity:.5;
+    cursor:not-allowed;
+}
 
-        .more-dropdown.show {
-            display: flex;
-        }
+/* PROCESSING */
+.processing{
+    display:none;
+    text-align:center;
+    padding:20px;
+}
 
-        .dropdown-item {
-            text-decoration: none;
-            color: #b0b0c5;
-            font-size: 13px;
-            padding: 10px 15px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: 0.2s;
-        }
+.loader{
+    width:55px;
+    height:55px;
+    border:4px solid rgba(0,255,204,.15);
+    border-top-color:#00ffcc;
+    border-radius:50%;
+    animation:spin 1s linear infinite;
+    margin:0 auto 15px;
+}
 
-        .dropdown-item:hover {
-            background: rgba(0, 255, 204, 0.1);
-            color: #fff;
-        }
-    </style>
+@keyframes spin{
+    to{transform:rotate(360deg)}
+}
+
+.progress{
+    width:100%;
+    height:7px;
+    background:rgba(255,255,255,.08);
+    border-radius:20px;
+    overflow:hidden;
+    margin:15px 0;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#00ffcc,#007bff);
+    transition:.3s;
+}
+
+/* OUTFITS */
+.outfit-tools{
+    display:none;
+}
+
+.outfit-filter{
+    display:flex;
+    gap:8px;
+    margin-bottom:12px;
+}
+
+.outfit-filter input,
+.outfit-filter select{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.1);
+    color:#fff;
+    border-radius:10px;
+    padding:10px;
+    outline:none;
+}
+
+.outfit-filter input{
+    flex:1;
+}
+
+.outfit-filter select{
+    width:110px;
+}
+
+.outfit-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:9px;
+    max-height:360px;
+    overflow-y:auto;
+    padding:3px;
+}
+
+.outfit{
+    background:rgba(10,8,20,.8);
+    border:2px solid rgba(255,255,255,.06);
+    border-radius:12px;
+    padding:7px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.outfit:hover,
+.outfit.selected{
+    border-color:#00ffcc;
+    background:rgba(0,255,204,.08);
+}
+
+.outfit-preview{
+    height:85px;
+    border-radius:8px;
+    background:linear-gradient(145deg,#292333,#09070e);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    margin-bottom:6px;
+}
+
+.outfit-preview svg{
+    width:75px;
+    height:75px;
+}
+
+.outfit-name{
+    font-size:9px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.selected-info{
+    min-height:20px;
+    color:#00ffcc;
+    font-size:12px;
+    text-align:center;
+    margin:10px;
+}
+
+/* BEFORE AFTER */
+.before-after{
+    display:none;
+    position:relative;
+    margin:15px auto;
+    max-width:100%;
+}
+
+.before-after img{
+    width:100%;
+    border-radius:15px;
+}
+
+/* FOOTER */
+.footer{
+    text-align:center;
+    color:#777793;
+    font-size:11px;
+    margin-top:35px;
+}
+
+.footer span{
+    color:#00ffcc;
+}
+
+/* NAV */
+.bottom-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:70px;
+    background:rgba(20,15,35,.96);
+    backdrop-filter:blur(15px);
+    border-top:1px solid rgba(0,255,204,.15);
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    z-index:4000;
+}
+
+.nav-btn{
+    background:none;
+    border:none;
+    color:#aaa;
+    font-size:19px;
+    cursor:pointer;
+}
+
+.nav-btn:hover{
+    color:#00ffcc;
+}
+
+/* TOAST */
+.toast{
+    position:fixed;
+    bottom:85px;
+    left:50%;
+    transform:translateX(-50%) translateY(20px);
+    background:#161125;
+    border:1px solid rgba(0,255,204,.3);
+    color:#fff;
+    padding:11px 18px;
+    border-radius:12px;
+    font-size:12px;
+    opacity:0;
+    pointer-events:none;
+    transition:.3s;
+    z-index:9999;
+}
+
+.toast.show{
+    opacity:1;
+    transform:translateX(-50%) translateY(0);
+}
+
+/* MOBILE */
+@media(max-width:430px){
+
+    body{
+        padding:14px;
+        padding-bottom:90px;
+    }
+
+    .header-banner{
+        padding:16px;
+    }
+
+    .tools-grid{
+        gap:10px;
+    }
+
+    .tool-card{
+        padding:17px 8px;
+    }
+
+    .outfit-grid{
+        grid-template-columns:repeat(3,1fr);
+    }
+}
+</style>
 </head>
+
 <body>
 
-    <!-- Top Status Bar Simulation -->
-    <div class="top-info-bar">
-        <span>6:00 PM</span>
-        <div class="top-icons">
-            <i class="fas fa-wifi"></i>
-            <i class="fas fa-battery-full"></i>
+<!-- TOP -->
+<div class="top-info-bar">
+    <span id="clock">--:--</span>
+
+    <div class="top-icons">
+        <i class="fa-solid fa-wifi"></i>
+        <i class="fa-solid fa-battery-three-quarters"></i>
+    </div>
+</div>
+
+
+<!-- HEADER -->
+<div class="header-banner">
+
+    <div class="header-text">
+        <h2>P/J AI Studio</h2>
+        <p>Professional AI Photo Editing Studio</p>
+    </div>
+
+    <a href="#" class="admin-btn"
+       onclick="showToast('Admin panel coming with backend connection');return false;">
+        <i class="fa-solid fa-shield-halved"></i>
+        Admin
+    </a>
+
+</div>
+
+
+<!-- TOOLS -->
+<div class="section-title">
+    <i class="fa-solid fa-wand-magic-sparkles"></i>
+    Advanced AI Tools
+</div>
+
+
+<div class="tools-grid">
+
+    <div class="tool-card" onclick="openTool('enhance')">
+        <div class="tool-icon">
+            <i class="fa-solid fa-expand"></i>
+        </div>
+        <div class="tool-name">HD Enhance</div>
+        <div class="tool-desc">
+            Ultra HD resolution enhancement
         </div>
     </div>
 
-    <!-- Main Header Banner -->
-    <div class="header-banner">
-        <div class="header-text">
-            <h2>P/J AI Studio</h2>
-            <p>Select an AI Tool to Edit</p>
-        </div>
-        <a href="admin.html" class="admin-btn">
-            <i class="fas fa-shield-alt"></i> Admin Panel
-        </a>
-    </div>
 
-    <!-- Tools Section Title -->
-    <div class="section-title">
-        <i class="fas fa-wand-magic-sparkles"></i> Advanced AI Tools (20+)
-    </div>
-
-    <!-- 2-Column Tools Grid -->
-    <div class="tools-grid">
-        <div class="tool-card" onclick="startTool('HD Enhance')">
-            <div class="tool-icon-box"><i class="fas fa-image"></i></div>
-            <div class="tool-name">HD Enhance</div>
-            <div class="tool-desc">Upscale & clear resolution</div>
+    <div class="tool-card" onclick="openTool('outfit')">
+        <div class="tool-icon">
+            <i class="fa-solid fa-shirt"></i>
         </div>
-        <div class="tool-card" onclick="startTool('Outfit Swap')">
-            <div class="tool-icon-box"><i class="fas fa-tshirt"></i></div>
-            <div class="tool-name">Outfit Swap</div>
-            <div class="tool-desc">Change clothes instantly (500+)</div>
-        </div>
-        <div class="tool-card" onclick="startTool('BG Remover')">
-            <div class="tool-icon-box"><i class="fas fa-eraser"></i></div>
-            <div class="tool-name">BG Remover</div>
-            <div class="tool-desc">Isolate subject with AI</div>
-        </div>
-        <div class="tool-card" onclick="startTool('Photo Repair')">
-            <div class="tool-icon-box"><i class="fas fa-history"></i></div>
-            <div class="tool-name">Photo Repair</div>
-            <div class="tool-desc">Colorize & fix old pics</div>
-        </div>
-        <div class="tool-card" onclick="startTool('Beauty Face')">
-            <div class="tool-icon-box"><i class="fas fa-smile-beam"></i></div>
-            <div class="tool-name">Beauty Face</div>
-            <div class="tool-desc">Skin tone & whitening glow</div>
-        </div>
-        <div class="tool-card" onclick="startTool('GenErase')">
-            <div class="tool-icon-box"><i class="fas fa-cut"></i></div>
-            <div class="tool-name">GenErase</div>
-            <div class="tool-desc">Remove unwanted objects</div>
-        </div>
-        <div class="tool-card" onclick="startTool('AI Filters')">
-            <div class="tool-icon-box"><i class="fas fa-paint-brush"></i></div>
-            <div class="tool-name">AI Filters</div>
-            <div class="tool-desc">100+ Professional styles</div>
-        </div>
-        <div class="tool-card" onclick="startTool('AI Avatar')">
-            <div class="tool-icon-box"><i class="fas fa-robot"></i></div>
-            <div class="tool-name">AI Avatar</div>
-            <div class="tool-desc">Generate unique portraits</div>
+        <div class="tool-name">Outfit Swap</div>
+        <div class="tool-desc">
+            500+ professional outfits
         </div>
     </div>
 
-    <!-- Hidden Gallery File Input -->
-    <input type="file" id="hiddenFileInput" accept="image/*" style="display: none;" onchange="handleImageSelection(event)">
 
-    <!-- AI Processing & Result Modal -->
-    <div class="ai-modal" id="aiModal">
-        <h3 id="modalTitle">Processing Image...</h3>
-        <div class="ai-loader" id="aiLoader"></div>
-        
-        <!-- Visual Outfit Grid Selection Container -->
-        <div class="outfit-grid" id="outfitGridContainer"></div>
-
-        <img id="resultImg" alt="Processed Output">
-        
-        <div>
-            <button class="modal-btn" id="downloadBtn" style="display: none;" onclick="downloadResult()">Download Photo</button>
-            <button class="modal-btn cancel" onclick="closeModal()">Close</button>
+    <div class="tool-card" onclick="openTool('background')">
+        <div class="tool-icon">
+            <i class="fa-solid fa-scissors"></i>
+        </div>
+        <div class="tool-name">BG Remover</div>
+        <div class="tool-desc">
+            Remove background
         </div>
     </div>
 
-    <!-- Footer Branding -->
-    <div class="footer-credit">
-        <p>P/J AI Photo Editor | Developed by <span>PrinCce Jutt</span></p>
-    </div>
 
-    <!-- Bottom Navigation Bar -->
-    <div class="bottom-nav" style="position: relative;">
-        <button class="nav-item active" onclick="shareApp()"><i class="fas fa-share-alt"></i></button>
-        <a href="#" class="nav-item"><i class="fas fa-heart"></i></a>
-        <a href="dashboard.html" class="nav-item"><i class="fas fa-edit"></i></a>
-        <a href="admin.html" class="nav-item"><i class="fas fa-trash-alt"></i></a>
-        
-        <button class="nav-item" id="moreTrigger" onclick="toggleMoreMenu(event)">
-            <i class="fas fa-ellipsis-v"></i>
-        </button>
-
-        <div class="more-dropdown" id="moreMenu">
-            <a href="#" class="dropdown-item"><i class="fas fa-crown"></i> Go Premium</a>
-            <a href="#" class="dropdown-item"><i class="fas fa-user-circle"></i> My Account</a>
-            <a href="#" class="dropdown-item"><i class="fas fa-cog"></i> Settings</a>
-            <a href="#" class="dropdown-item"><i class="fas fa-info-circle"></i> Help & About</a>
-            <a href="#" class="dropdown-item"><i class="fas fa-star"></i> Rate Us</a>
+    <div class="tool-card" onclick="openTool('repair')">
+        <div class="tool-icon">
+            <i class="fa-solid fa-image"></i>
+        </div>
+        <div class="tool-name">Photo Repair</div>
+        <div class="tool-desc">
+            Restore old photos
         </div>
     </div>
 
-    <!-- JavaScript Workflow Logic with Real Image & Outfit Modification Canvas -->
-    <script>
-        let selectedToolName = "";
-        let originalImageObj = null;
-        let selectedOutfitName = "Pant-Shirt";
-        let uploadedImageFile = null;
 
-        function startTool(toolName) {
-            selectedToolName = toolName;
-            document.getElementById('hiddenFileInput').click();
-        }
+    <div class="tool-card" onclick="openTool('beauty')">
+        <div class="tool-icon">
+            <i class="fa-solid fa-face-smile-beam"></i>
+        </div>
+        <div class="tool-name">Beauty Face</div>
+        <div class="tool-desc">
+            AI glow & skin tone
+        </div>
+    </div>
 
-        function handleImageSelection(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-            uploadedImageFile = file;
 
-            const modal = document.getElementById('aiModal');
-            const title = document.getElementById('modalTitle');
-            const loader = document.getElementById('aiLoader');
-            const imgElement = document.getElementById('resultImg');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const outfitGrid = document.getElementById('outfitGridContainer');
+    <div class="tool-card" onclick="openTool('erase')">
+        <div class="tool-icon">
+            <i class="fa-solid fa-eraser"></i>
+        </div>
+        <div class="tool-name">GenErase</div>
+        <div class="tool-desc">
+            Remove unwanted objects
+        </div>
+    </div>
 
-            modal.style.display = 'flex';
-            imgElement.style.display = 'none';
-            downloadBtn.style.display = 'none';
-            outfitGrid.style.display = 'none';
-            loader.style.display = 'block';
 
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                originalImageObj = new Image();
-                originalImageObj.src = e.target.result;
-                
-                originalImageObj.onload = function() {
-                    loader.style.display = 'none';
+    <div class="tool-card" onclick="openTool('filters')">
+        <div class="tool-icon">
+            <i class="fa-solid fa-palette"></i>
+        </div>
+        <div class="tool-name">AI Filters</div>
+        <div class="tool-desc">
+            Professional effects
+        </div>
+    </div>
 
-                    if (selectedToolName === 'Outfit Swap') {
-                        title.innerText = "Select Outfit for AI Change:";
-                        outfitGrid.innerHTML = "";
-                        
-                        const items = [
-                            { name: "Pant-Shirt", icon: "fa-tshirt" },
-                            { name: "Smart Cap", icon: "fa-hat-cowboy" },
-                            { name: "Beard & Moustache", icon: "fa-user-tie" },
-                            { name: "Shalwar Kameez", icon: "fa-vest" },
-                            { name: "Formal Suit", icon: "fa-user-ninja" },
-                            { name: "Jacket Style", icon: "fa-vest-patches" }
-                        ];
 
-                        items.forEach((item, index) => {
-                            outfitGrid.innerHTML += `
-                                <div class="outfit-card ${index === 0 ? 'selected' : ''}" onclick="selectOutfitItem(this, '${item.name}')">
-                                    <i class="fas ${item.icon}"><span>${item.name}</span></i>
-                                </div>
-                            `;
-                        });
-                        selectedOutfitName = items[0].name;
-                        outfitGrid.style.display = 'grid';
-                        
-                        // Apply outfit instantly with loading simulation
-                        triggerOutfitSwap(selectedOutfitName);
-                    } else if (selectedToolName === 'HD Enhance') {
-                        applyHDEnhancement();
-                    } else if (selectedToolName === 'Beauty Face') {
-                        applyBeautyFaceEnhancement();
-                    } else {
-                        runBackendSimulation(selectedToolName);
-                    }
-                };
-            };
-            reader.readAsDataURL(file);
-            event.target.value = '';
-        }
+    <div class="tool-card" onclick="openTool('avatar')">
+        <div class="tool-icon">
+            <i class="fa-solid fa-user-astronaut"></i>
+        </div>
+        <div class="tool-name">AI Avatar</div>
+        <div class="tool-desc">
+            AI portrait generation
+        </div>
+    </div>
 
-        function selectOutfitItem(element, name) {
-            document.querySelectorAll('.outfit-card').forEach(card => card.classList.remove('selected'));
-            element.classList.add('selected');
-            selectedOutfitName = name;
-            triggerOutfitSwap(name);
-        }
+</div>
 
-        // Asli Outfit Change / Color Remapping & Overlay Logic via Canvas
-        async function triggerOutfitSwap(outfitName) {
-            const modal = document.getElementById('aiModal');
-            const title = document.getElementById('modalTitle');
-            const loader = document.getElementById('aiLoader');
-            const imgElement = document.getElementById('resultImg');
-            const downloadBtn = document.getElementById('downloadBtn');
-            const outfitGrid = document.getElementById('outfitGridContainer');
 
-            outfitGrid.style.display = 'none';
-            loader.style.display = 'block';
-            imgElement.style.display = 'none';
-            title.innerText = `Applying AI ${outfitName}... (Changing Outfit)`;
+<div class="footer">
+    P/J AI Photo Editor |
+    Developed by <span>PrinCce Jutt</span>
+</div>
 
-            // 3 seconds simulation for real feel processing
-            await new Promise(resolve => setTimeout(resolve, 3000));
 
-            const canvas = document.createElement('canvas');
-            const ctx = canvas.getContext('2d');
-            canvas.width = originalImageObj.width;
-            canvas.height = originalImageObj.height;
+<!-- EDITOR MODAL -->
+<div class="modal" id="editorModal">
 
-            // Draw base original image
-            ctx.drawImage(originalImageObj, 0, 0);
+    <div class="modal-box">
 
-            // AI Outfit Color & Texture Modification Overlay (Targeting Lower/Shirt region via pixel blending)
-            const imgData = ctx.getImageData(0, Math.floor(canvas.height * 0.4), canvas.width, Math.floor(canvas.height * 0.6));
-            const data = imgData.data;
+        <div class="modal-header">
 
-            // Different outfits modify RGB channels differently to simulate real color/texture shifting of clothes
-            let rMod = 1.0, gMod = 1.0, bMod = 1.0;
-            if (outfitName === 'Formal Suit') { rMod = 0.6; gMod = 0.6; bMod = 0.8; } // Dark blue/formal tint
-            else if (outfitName === 'Jacket Style') { rMod = 0.8; gMod = 0.5; bMod = 0.4; } // Leather/Jacket brownish tint
-            else if (outfitName === 'Smart Cap') { rMod = 0.9; gMod = 0.9; bMod = 0.9; } // Cap style contrast
-            else if (outfitName === 'Shalwar Kameez') { rMod = 1.1; gMod = 1.0; bMod = 0.9; } // Traditional fabric tone
-            else if (outfitName === 'Pant-Shirt') { rMod = 0.7; gMod = 0.8; bMod = 1.1; } // Casual blue shirt tone
+            <div class="modal-title" id="modalTitle">
+                AI Photo Editor
+            </div>
 
-            for (let i = 0; i < data.length; i += 4) {
-                // Avoid modifying skin tones too heavily by checking brightness differential
-                let avg = (data[i] + data[i+1] + data[i+2]) / 3;
-                if (avg < 150) { // Target darker/clothing pixels
-                    data[i] = Math.min(255, data[i] * rMod);     // Red
-                    data[i+1] = Math.min(255, data[i+1] * gMod); // Green
-                    data[i+2] = Math.min(255, data[i+2] * bMod); // Blue
-                }
-            }
-            ctx.putImageData(imgData, 0, Math.floor(canvas.height * 0.4));
+            <button class="close" onclick="closeTool()">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
 
-            // Add text watermark badge on modified result
-            ctx.font = "bold 24px Arial";
-            ctx.fillStyle = "rgba(0, 255, 204, 0.8)";
-            ctx.fillText(`P/J AI: ${outfitName}`, 30, canvas.height - 40);
+        </div>
 
-            const modifiedDataUrl = canvas.toDataURL('image/png', 1.0);
-            
-            imgElement.src = modifiedDataUrl;
-            loader.style.display = 'none';
-            imgElement.style.display = 'block';
-            outfitGrid.style.display = 'grid';
-            title.innerText = `${outfitName} Applied Successfully!`;
-            downloadBtn.style.display = 'inline-block';
-            saveToAdminHistory(`Outfit Swap (${outfitName})`, modifiedDataUrl);
-        }
 
-        async function runBackendSimulation(toolName) {
-            const title = document.getElementById('modalTitle');
-            const loader = document.getElementById('aiLoader');
-            const imgElement = document.getElementById('resultImg');
-            const downloadBtn = document.getElementById('downloadBtn');
+        <!-- UPLOAD -->
+        <label class="upload-area" for="fileInput">
 
-            loader.style.display = 'block';
-            title.innerText = `Processing ${toolName} via AI Cloud...`;
+            <i class="fa-solid fa-cloud-arrow-up"></i>
 
-            await new Promise(resolve => setTimeout(resolve, 3000));
+            <p>
+                Tap here to upload your photo
+            </p>
 
-            imgElement.src = originalImageObj.src;
-            loader.style.display = 'none';
-            imgElement.style.display = 'block';
-            title.innerText = `${toolName} Completed Successfully!`;
-            downloadBtn.style.display = 'inline-block';
-            saveToAdminHistory(toolName, imgElement.src);
-        }
+            <small style="color:#666">
+                JPG, PNG, WEBP • Maximum 25MB
+            </small>
 
-        // Ultra HD Enhance Logic
-        function applyHDEnhancement() {
-            const title = document.getElementById('modalTitle');
-            const loader = document.getElementById('aiLoader');
-            const imgElement = document.getElementById('resultImg');
-            const downloadBtn = document.getElementById('downloadBtn');
+        </label>
 
-            loader.style.display = 'block';
-            title.innerText = "Enhancing Details & Sharpening Edges...";
-            
-            setTimeout(() => {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = originalImageObj.width * 1.5;
-                canvas.height = originalImageObj.height * 1.5;
-                ctx.imageSmoothingEnabled = true;
-                ctx.imageSmoothingQuality = 'high';
-                ctx.drawImage(originalImageObj, 0, 0, canvas.width, canvas.height);
+        <input
+            type="file"
+            id="fileInput"
+            accept="image/jpeg,image/png,image/webp"
+        >
 
-                const hdDataUrl = canvas.toDataURL('image/png', 1.0);
-                imgElement.src = hdDataUrl;
-                imgElement.style.display = 'block';
-                loader.style.display = 'none';
-                title.innerText = "Ultra HD Details Applied!";
-                downloadBtn.style.display = 'inline-block';
-                saveToAdminHistory('HD Enhance', hdDataUrl);
-            }, 3000);
-        }
 
-        // Beauty Face Logic
-        function applyBeautyFaceEnhancement() {
-            const title = document.getElementById('modalTitle');
-            const loader = document.getElementById('aiLoader');
-            const imgElement = document.getElementById('resultImg');
-            const downloadBtn = document.getElementById('downloadBtn');
+        <!-- PREVIEW -->
+        <div class="preview" id="preview">
 
-            loader.style.display = 'block';
-            title.innerText = "Applying Soft Skin Glow & Face Brightening...";
+            <img id="previewImage">
 
-            setTimeout(() => {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                canvas.width = originalImageObj.width;
-                canvas.height = originalImageObj.height;
-                ctx.filter = 'brightness(1.12) contrast(1.05) saturate(1.03)';
-                ctx.drawImage(originalImageObj, 0, 0, canvas.width, canvas.height);
+        </div>
 
-                const glowDataUrl = canvas.toDataURL('image/png');
-                imgElement.src = glowDataUrl;
-                imgElement.style.display = 'block';
-                loader.style.display = 'none';
-                title.innerText = "Beauty Face Successful (Skin Glow Applied)!";
-                downloadBtn.style.display = 'inline-block';
-                saveToAdminHistory('Beauty Face', glowDataUrl);
-            }, 2500);
-        }
 
-        function saveToAdminHistory(tool, imageSrc) {
-            let historyList = JSON.parse(localStorage.getItem('pj_admin_history')) || [];
-            const newEntry = {
-                tool: tool,
-                image: imageSrc,
-                date: new Date().toLocaleString()
-            };
-            historyList.unshift(newEntry);
-            localStorage.setItem('pj_admin_history', JSON.stringify(historyList));
-        }
+        <!-- OUTFIT SECTION -->
+        <div class="outfit-tools" id="outfitTools">
 
-        function downloadResult() {
-            const imgSrc = document.getElementById('resultImg').src;
-            const a = document.createElement('a');
-            a.href = imgSrc;
-            a.download = `${selectedToolName.replace(/\s+/g, '_')}_Result.png`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-        }
+            <div class="outfit-filter">
 
-        function closeModal() {
-            document.getElementById('aiModal').style.display = 'none';
-        }
+                <input
+                    type="search"
+                    id="outfitSearch"
+                    placeholder="Search outfit..."
+                >
 
-        function toggleMoreMenu(event) {
-            event.stopPropagation();
-            const menu = document.getElementById('moreMenu');
-            menu.classList.toggle('show');
-        }
+                <select id="outfitCategory">
 
-        window.addEventListener('click', function(e) {
-            const menu = document.getElementById('moreMenu');
-            const trigger = document.getElementById('moreTrigger');
-            if (menu.classList.contains('show')) {
-                if (!menu.contains(e.target) && e.target !== trigger) {
-                    menu.classList.remove('show');
-                }
-            }
+                    <option value="all">
+                        All
+                    </option>
+
+                    <option value="Shirt">
+                        Shirts
+                    </option>
+
+                    <option value="T-Shirt">
+                        T-Shirts
+                    </option>
+
+                    <option value="Pant">
+                        Pants
+                    </option>
+
+                    <option value="Suit">
+                        Suits
+                    </option>
+
+                    <option value="Kurta">
+                        Kurta
+                    </option>
+
+                    <option value="Formal">
+                        Formal
+                    </option>
+
+                    <option value="Casual">
+                        Casual
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="selected-info" id="selectedInfo">
+                Select an outfit
+            </div>
+
+
+            <div class="outfit-grid" id="outfitGrid"></div>
+
+        </div>
+
+
+        <!-- PROCESSING -->
+        <div class="processing" id="processing">
+
+            <div class="loader"></div>
+
+            <div id="processingText">
+                AI Processing...
+            </div>
+
+            <div class="progress">
+                <div
+                    class="progress-bar"
+                    id="progressBar">
+                </div>
+            </div>
+
+            <small id="seconds">
+                Preparing...
+            </small>
+
+        </div>
+
+
+        <!-- BUTTONS -->
+        <div class="btn-row">
+
+            <button
+                class="btn"
+                id="processBtn"
+                onclick="processImage()">
+
+                <i class="fa-solid fa-wand-magic-sparkles"></i>
+                Start AI
+
+            </button>
+
+
+            <button
+                class="btn secondary"
+                onclick="resetEditor()">
+
+                Reset
+
+            </button>
+
+
+            <button
+                class="btn secondary"
+                onclick="closeTool()">
+
+                Close
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+
+    <button class="nav-btn">
+        <i class="fa-solid fa-house"></i>
+    </button>
+
+    <button
+        class="nav-btn"
+        onclick="showToast('Premium system ready for payment integration')">
+
+        <i class="fa-solid fa-crown"></i>
+
+    </button>
+
+    <button
+        class="nav-btn"
+        onclick="showToast('Account system requires authentication backend')">
+
+        <i class="fa-solid fa-user"></i>
+
+    </button>
+
+    <button
+        class="nav-btn"
+        onclick="showToast('Settings')">
+
+        <i class="fa-solid fa-gear"></i>
+
+    </button>
+
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+
+<canvas id="canvas" style="display:none"></canvas>
+
+
+<script>
+
+"use strict";
+
+
+/* ==============================
+   GLOBAL VARIABLES
+============================== */
+
+let currentTool = null;
+let selectedOutfit = null;
+let imageFile = null;
+let imageURL = null;
+
+
+/* ==============================
+   TOOL NAMES
+============================== */
+
+const toolNames = {
+
+    enhance: "HD Enhance",
+
+    outfit: "AI Outfit Swap",
+
+    background: "AI Background Remover",
+
+    repair: "AI Photo Repair",
+
+    beauty: "AI Beauty Face",
+
+    erase: "AI GenErase",
+
+    filters: "AI Filters",
+
+    avatar: "AI Avatar"
+
+};
+
+
+/* ==============================
+   OPEN TOOL
+============================== */
+
+function openTool(tool){
+
+    currentTool = tool;
+
+    selectedOutfit = null;
+
+    document
+        .getElementById("editorModal")
+        .classList.add("active");
+
+    document
+        .getElementById("modalTitle")
+        .innerText = toolNames[tool];
+
+    document
+        .getElementById("outfitTools")
+        .style.display =
+        tool === "outfit"
+        ? "block"
+        : "none";
+
+    document
+        .getElementById("processBtn")
+        .innerHTML =
+        tool === "outfit"
+        ? '<i class="fa-solid fa-shirt"></i> Apply Outfit'
+        : '<i class="fa-solid fa-wand-magic-sparkles"></i> Start AI';
+
+    resetEditor(false);
+
+    if(tool === "outfit"){
+        renderOutfits();
+    }
+
+}
+
+
+/* ==============================
+   CLOSE
+============================== */
+
+function closeTool(){
+
+    document
+        .getElementById("editorModal")
+        .classList.remove("active");
+
+}
+
+
+/* ==============================
+   FILE UPLOAD
+============================== */
+
+document
+.getElementById("fileInput")
+.addEventListener("change",function(){
+
+    const file = this.files[0];
+
+    if(!file){
+        return;
+    }
+
+    if(!file.type.startsWith("image/")){
+
+        showToast("Please select an image.");
+
+        return;
+    }
+
+    if(file.size > 25 * 1024 * 1024){
+
+        showToast("Image must be below 25MB.");
+
+        return;
+    }
+
+    imageFile = file;
+
+    if(imageURL){
+        URL.revokeObjectURL(imageURL);
+    }
+
+    imageURL = URL.createObjectURL(file);
+
+    const img =
+        document.getElementById("previewImage");
+
+    img.src = imageURL;
+
+    document
+        .getElementById("preview")
+        .style.display = "block";
+
+    showToast("Photo uploaded successfully.");
+
+});
+
+
+/* ==============================
+   520 OUTFITS
+============================== */
+
+const colors = [
+
+    ["White","#ffffff"],
+    ["Black","#111111"],
+    ["Blue","#2563eb"],
+    ["Red","#dc2626"],
+    ["Green","#16a34a"],
+    ["Gold","#f59e0b"],
+    ["Purple","#7c3aed"],
+    ["Pink","#ec4899"],
+    ["Grey","#6b7280"],
+    ["Brown","#78350f"]
+
+];
+
+
+const categories = [
+
+    "Shirt",
+    "T-Shirt",
+    "Pant",
+    "Suit",
+    "Kurta",
+    "Formal",
+    "Casual"
+
+];
+
+
+const styles = [
+
+    "Classic",
+    "Premium",
+    "Modern",
+    "Royal",
+    "Elegant",
+    "Luxury",
+    "Urban",
+    "Signature",
+    "Smart",
+    "Executive"
+
+];
+
+
+const outfits = [];
+
+
+for(let i = 1; i <= 520; i++){
+
+    const category =
+        categories[
+            (i - 1) %
+            categories.length
+        ];
+
+    const color =
+        colors[
+            (i - 1) %
+            colors.length
+        ];
+
+    const style =
+        styles[
+            (i - 1) %
+            styles.length
+        ];
+
+    outfits.push({
+
+        id:i,
+
+        name:
+        `${style} ${color[0]} ${category}`,
+
+        category:category,
+
+        color:color[1],
+
+        accent:
+        colors[
+            (i + 3) %
+            colors.length
+        ][1]
+
+    });
+
+}
+
+
+/* ==============================
+   OUTFIT SVG PREVIEW
+============================== */
+
+function outfitSVG(outfit){
+
+    const color = outfit.color;
+
+    const accent = outfit.accent;
+
+
+    if(outfit.category === "Pant"){
+
+        return `
+
+        <svg viewBox="0 0 100 100">
+
+            <path
+            d="M32 10h36l7 38-15 5-10-25-10 25-15-5z"
+            fill="${color}"
+            />
+
+            <path
+            d="M50 24v45"
+            stroke="${accent}"
+            stroke-width="3"
+            />
+
+        </svg>
+
+        `;
+
+    }
+
+
+    if(
+        outfit.category === "Suit" ||
+        outfit.category === "Formal"
+    ){
+
+        return `
+
+        <svg viewBox="0 0 100 100">
+
+            <path
+            d="M30 10l20 12 20-12 18 25-12 12-8-10v53H32V37l-8 10-12-12z"
+            fill="${color}"
+            />
+
+            <path
+            d="M50 22l-11 15 11 14 11-14z"
+            fill="${accent}"
+            />
+
+        </svg>
+
+        `;
+
+    }
+
+
+    if(outfit.category === "Kurta"){
+
+        return `
+
+        <svg viewBox="0 0 100 100">
+
+            <path
+            d="M35 8h30l18 23-10 12-8-9v55H35V34l-8 9-10-12z"
+            fill="${color}"
+            />
+
+            <path
+            d="M50 9v30"
+            stroke="${accent}"
+            stroke-width="4"
+            />
+
+        </svg>
+
+        `;
+
+    }
+
+
+    return `
+
+    <svg viewBox="0 0 100 100">
+
+        <path
+        d="M31 9h38l18 24-12 12-8-9v53H33V36l-8 9-12-12z"
+        fill="${color}"
+        />
+
+        <path
+        d="M50 10v23"
+        stroke="${accent}"
+        stroke-width="4"
+        />
+
+    </svg>
+
+    `;
+
+}
+
+
+/* ==============================
+   RENDER OUTFITS
+============================== */
+
+function renderOutfits(){
+
+    const grid =
+        document.getElementById("outfitGrid");
+
+    const search =
+        document
+        .getElementById("outfitSearch")
+        .value
+        .toLowerCase();
+
+    const category =
+        document
+        .getElementById("outfitCategory")
+        .value;
+
+
+    grid.innerHTML = "";
+
+
+    const filtered =
+        outfits.filter(outfit => {
+
+            const matchesSearch =
+                outfit.name
+                .toLowerCase()
+                .includes(search);
+
+            const matchesCategory =
+                category === "all" ||
+                outfit.category === category;
+
+            return (
+                matchesSearch &&
+                matchesCategory
+            );
+
         });
 
-        function shareApp() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'P/J AI Studio',
-                    text: 'Best AI Photo Editor app! Check it out:',
-                    url: window.location.href,
-                }).catch(console.error);
-            } else {
-                alert("Link copied! Share this app with your friends.");
-            }
+
+    filtered.forEach(outfit => {
+
+        const card =
+            document.createElement("div");
+
+        card.className =
+            "outfit" +
+            (
+                selectedOutfit &&
+                selectedOutfit.id === outfit.id
+                ? " selected"
+                : ""
+            );
+
+
+        card.innerHTML = `
+
+            <div class="outfit-preview">
+
+                ${outfitSVG(outfit)}
+
+            </div>
+
+            <div class="outfit-name">
+
+                ${outfit.name}
+
+            </div>
+
+        `;
+
+
+        card.onclick = () => {
+
+            selectedOutfit = outfit;
+
+            document
+            .getElementById("selectedInfo")
+            .innerText =
+            "Selected: " +
+            outfit.name;
+
+            renderOutfits();
+
+        };
+
+
+        grid.appendChild(card);
+
+    });
+
+}
+
+
+document
+.getElementById("outfitSearch")
+.addEventListener(
+    "input",
+    renderOutfits
+);
+
+
+document
+.getElementById("outfitCategory")
+.addEventListener(
+    "change",
+    renderOutfits
+);
+
+
+/* ==============================
+   PROCESS IMAGE
+============================== */
+
+async function processImage(){
+
+    if(!imageFile){
+
+        showToast(
+            "Please upload your photo first."
+        );
+
+        return;
+    }
+
+
+    if(
+        currentTool === "outfit" &&
+        !selectedOutfit
+    ){
+
+        showToast(
+            "Please select an outfit first."
+        );
+
+        return;
+    }
+
+
+    const processing =
+        document.getElementById("processing");
+
+    const progress =
+        document.getElementById("progressBar");
+
+    const seconds =
+        document.getElementById("seconds");
+
+    const button =
+        document.getElementById("processBtn");
+
+
+    processing.style.display = "block";
+
+    button.disabled = true;
+
+
+    /*
+        Professional 10-second UI.
+        Real AI API should be called here.
+    */
+
+
+    for(let i = 0; i <= 100; i++){
+
+        progress.style.width = i + "%";
+
+        const remaining =
+            Math.ceil(
+                (100 - i) / 10
+            );
+
+        seconds.innerText =
+            remaining > 0
+            ? "Processing... " +
+              remaining +
+              " seconds"
+            : "Finalizing...";
+
+
+        await new Promise(
+            resolve =>
+            setTimeout(resolve,100)
+        );
+
+    }
+
+
+    processing.style.display = "none";
+
+    button.disabled = false;
+
+
+    /*
+       Local demonstration processing.
+       Replace this section with
+       real AI API response.
+    */
+
+
+    if(currentTool === "beauty"){
+
+        applyBeautyPreview();
+
+    }
+
+    else if(currentTool === "enhance"){
+
+        applyEnhancePreview();
+
+    }
+
+    else if(currentTool === "filters"){
+
+        applyFilterPreview();
+
+    }
+
+    else{
+
+        document
+        .getElementById("previewImage")
+        .src = imageURL;
+
+    }
+
+
+    showToast(
+        "Processing completed."
+    );
+
+}
+
+
+/* ==============================
+   BEAUTY PREVIEW
+============================== */
+
+function applyBeautyPreview(){
+
+    const img =
+        document.getElementById(
+            "previewImage"
+        );
+
+
+    img.style.filter =
+        "brightness(1.08) " +
+        "contrast(1.04) " +
+        "saturate(1.12)";
+
+}
+
+
+/* ==============================
+   ENHANCE PREVIEW
+============================== */
+
+function applyEnhancePreview(){
+
+    const img =
+        document.getElementById(
+            "previewImage"
+        );
+
+
+    img.style.filter =
+        "contrast(1.12) " +
+        "brightness(1.04) " +
+        "saturate(1.08)";
+
+}
+
+
+/* ==============================
+   FILTER
+============================== */
+
+function applyFilterPreview(){
+
+    const img =
+        document.getElementById(
+            "previewImage"
+        );
+
+
+    img.style.filter =
+        "contrast(1.15) " +
+        "saturate(1.25) " +
+        "brightness(1.04)";
+
+}
+
+
+/* ==============================
+   RESET
+============================== */
+
+function resetEditor(showMessage=true){
+
+    const preview =
+        document.getElementById(
+            "previewImage"
+        );
+
+    preview.style.filter = "none";
+
+
+    document
+    .getElementById("processing")
+    .style.display = "none";
+
+
+    document
+    .getElementById("progressBar")
+    .style.width = "0%";
+
+
+    if(showMessage){
+
+        showToast(
+            "Editor reset."
+        );
+
+    }
+
+}
+
+
+/* ==============================
+   TOAST
+============================== */
+
+function showToast(message){
+
+    const toast =
+        document.getElementById("toast");
+
+
+    toast.innerText = message;
+
+    toast.classList.add("show");
+
+
+    setTimeout(() => {
+
+        toast.classList.remove("show");
+
+    },3000);
+
+}
+
+
+/* ==============================
+   CLOCK
+============================== */
+
+function updateClock(){
+
+    const now = new Date();
+
+    document
+    .getElementById("clock")
+    .innerText =
+    now.toLocaleTimeString(
+        [],
+        {
+            hour:"2-digit",
+            minute:"2-digit"
         }
-    </script>
+    );
+
+}
+
+updateClock();
+
+setInterval(
+    updateClock,
+    1000
+);
+
+
+/* ==============================
+   MODAL BACKDROP CLOSE
+============================== */
+
+document
+.getElementById("editorModal")
+.addEventListener(
+    "click",
+    function(e){
+
+        if(e.target === this){
+
+            closeTool();
+
+        }
+
+    }
+);
+
+</script>
+
 </body>
 </html>
